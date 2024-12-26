@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useToast } from "@/components/ui/use-toast"
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toast"
 import { ParticleBackground } from "@/components/particle-background"
 
 export default function ContactPage() {
