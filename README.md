@@ -56,7 +56,7 @@ Welcome to my personal portfolio website! This project showcases my skills, proj
 1. Create a `.env.local` file in the root directory of the project.
 2. Add the following environment variables to the `.env.local` file:
 
-\`\`\`
+```
 NEXT_PUBLIC_SITE_URL=https://your-domain.com
 SMTP_HOST=your-smtp-host
 SMTP_PORT=your-smtp-port
@@ -64,6 +64,6 @@ SMTP_USER=your-smtp-username
 SMTP_PASS=your-smtp-password
 SMTP_FROM=your-email@example.com
 CONTACT_EMAIL=your-email@example.com
-\`\`\`
+```
 
 Replace the placeholder values with your actual SMTP server details and email addresses.
