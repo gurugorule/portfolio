@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring } from 'framer-motion'
 
 export function MatrixGridBackground() {
@@ -10,6 +10,7 @@ export function MatrixGridBackground() {
   const mouseY = useMotionValue(0)
   const springX = useSpring(mouseX, { stiffness: 50, damping: 10 })
   const springY = useSpring(mouseY, { stiffness: 50, damping: 10 })
+  const [windowSize, setWindowSize] = useState({ width: 0, height: 0 })
 
   useEffect(() => {
     const canvas = canvasRef.current
@@ -17,6 +18,12 @@ export function MatrixGridBackground() {
 
     const ctx = canvas.getContext('2d')
     if (!ctx) return
+
+    // Set initial window size
+    setWindowSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
 
     // Matrix rain effect
     const fontSize = 14
@@ -46,6 +53,10 @@ export function MatrixGridBackground() {
     const resize = () => {
       canvas.width = window.innerWidth
       canvas.height = window.innerHeight
+      setWindowSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      })
     }
 
     resize()
@@ -96,14 +107,14 @@ export function MatrixGridBackground() {
             className="absolute h-96 w-96 rounded-full bg-[#4ff0c1] opacity-[0.15] blur-[128px]"
             animate={{
               x: [
-                Math.random() * window.innerWidth,
-                Math.random() * window.innerWidth,
-                Math.random() * window.innerWidth,
+                Math.random() * windowSize.width,
+                Math.random() * windowSize.width,
+                Math.random() * windowSize.width,
               ],
               y: [
-                Math.random() * window.innerHeight,
-                Math.random() * window.innerHeight,
-                Math.random() * window.innerHeight,
+                Math.random() * windowSize.height,
+                Math.random() * windowSize.height,
+                Math.random() * windowSize.height,
               ],
             }}
             transition={{

@@ -35,6 +35,7 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg',
   },
+  metadataBase: new URL('https://example.com'),
 }
 
 export default function RootLayout({

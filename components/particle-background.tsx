@@ -1,9 +1,8 @@
 "use client"
 
 import { useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
 
-export function ParticleBackground() {
+export default function ParticleBackground() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
