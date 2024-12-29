@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { Home } from "lucide-react";
+import Link from "next/link";
 import dynamic from "next/dynamic";
 
 const ParticleBackground = dynamic(
@@ -82,8 +84,20 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center px-4">
+    <div className="relative min-h-screen flex flex-col items-center justify-center px-4">
       <ParticleBackground />
+      <div className="absolute top-4 left-4 z-20">
+        <Link href="/">
+          <Button
+            variant="outline"
+            size="icon"
+            className="bg-black/40 backdrop-blur-md border-gray-700 text-white hover:bg-white/10 hover:text-cyan-400 transition-colors"
+            aria-label="Go back to home"
+          >
+            <Home className="h-5 w-5" />
+          </Button>
+        </Link>
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
