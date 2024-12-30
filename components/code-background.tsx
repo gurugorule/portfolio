@@ -1,63 +1,63 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from 'react'
-import { motion } from 'framer-motion'
+import { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 
 const codeSnippets = [
   'const developer = "Gurunath Gorule"',
-  'async function createSolution() {',
+  "async function createSolution() {",
   '  const skills = ["React", "Node.js", "TypeScript"]',
-  '  return buildAwesomeProject(skills)',
-  '}',
-  'class SoftwareEngineer {',
-  '  constructor() {',
+  "  return buildAwesomeProject(skills)",
+  "}",
+  "class SoftwareEngineer {",
+  "  constructor() {",
   '    this.passion = "Building great software"',
-  '  }',
-  '}',
-]
+  "  }",
+  "}",
+];
 
 export function CodeBackground() {
-  const [currentLines, setCurrentLines] = useState<string[]>([])
-  const timeoutRef = useRef<NodeJS.Timeout>()
+  const [currentLines, setCurrentLines] = useState<string[]>([]);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
-    let currentIndex = 0
-    let currentLineIndex = 0
-    let currentText = ''
+    let currentIndex = 0;
+    let currentLineIndex = 0;
+    let currentText = "";
 
     const typeText = () => {
       if (currentLineIndex >= codeSnippets.length) {
-        currentLineIndex = 0
-        setCurrentLines([])
-        timeoutRef.current = setTimeout(typeText, 2000)
-        return
+        currentLineIndex = 0;
+        setCurrentLines([]);
+        timeoutRef.current = setTimeout(typeText, 2000);
+        return;
       }
 
-      const targetText = codeSnippets[currentLineIndex]
+      const targetText = codeSnippets[currentLineIndex];
       if (currentIndex < targetText.length) {
-        currentText = targetText.slice(0, currentIndex + 1)
-        currentIndex++
-        setCurrentLines(prev => {
-          const newLines = [...prev]
-          newLines[currentLineIndex] = currentText
-          return newLines
-        })
-        timeoutRef.current = setTimeout(typeText, 50)
+        currentText = targetText.slice(0, currentIndex + 1);
+        currentIndex++;
+        setCurrentLines((prev) => {
+          const newLines = [...prev];
+          newLines[currentLineIndex] = currentText;
+          return newLines;
+        });
+        timeoutRef.current = setTimeout(typeText, 50);
       } else {
-        currentIndex = 0
-        currentLineIndex++
-        timeoutRef.current = setTimeout(typeText, 500)
+        currentIndex = 0;
+        currentLineIndex++;
+        timeoutRef.current = setTimeout(typeText, 500);
       }
-    }
+    };
 
-    typeText()
+    typeText();
 
     return () => {
       if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
+        clearTimeout(timeoutRef.current);
       }
-    }
-  }, [])
+    };
+  }, []);
 
   return (
     <div className="fixed inset-0 -z-10 h-screen w-screen bg-black/90 overflow-hidden">
@@ -74,6 +74,5 @@ export function CodeBackground() {
         ))}
       </div>
     </div>
-  )
+  );
 }
-
