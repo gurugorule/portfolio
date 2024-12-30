@@ -1,9 +1,55 @@
 import { NextResponse } from "next/server";
 import sgMail from "@sendgrid/mail";
+import { kv } from "@vercel/kv";
+
+const RATE_LIMIT = 5; // Max 5 requests
+const RATE_LIMIT_WINDOW = 3600; // per hour (in seconds)
+
+// In-memory store for rate limiting when Vercel KV is not available
+const localRateLimit = new Map<string, number>();
 
 export async function POST(req: Request) {
   console.log("Received request to send email");
 
+  // Rate limiting
+  const ip = req.headers.get("x-forwarded-for") || "unknown";
+  let currentCount = 0;
+
+  try {
+    if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+      currentCount = (await kv.get<number>(`rate-limit:${ip}`)) || 0;
+    } else {
+      currentCount = localRateLimit.get(ip) || 0;
+    }
+  } catch (error) {
+    console.error("Error accessing rate limit data:", error);
+    // Fallback to local rate limiting
+    currentCount = localRateLimit.get(ip) || 0;
+  }
+
+  if (currentCount >= RATE_LIMIT) {
+    console.log(`Rate limit exceeded for IP: ${ip}`);
+    return NextResponse.json({ error: "Rate limit exceeded" }, { status: 429 });
+  }
+
+  // Increment rate limit count
+  try {
+    if (process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN) {
+      await kv.set(`rate-limit:${ip}`, currentCount + 1, {
+        ex: RATE_LIMIT_WINDOW,
+      });
+    } else {
+      localRateLimit.set(ip, currentCount + 1);
+      setTimeout(() => localRateLimit.delete(ip), RATE_LIMIT_WINDOW * 1000);
+    }
+  } catch (error) {
+    console.error("Error updating rate limit data:", error);
+    // Fallback to local rate limiting
+    localRateLimit.set(ip, currentCount + 1);
+    setTimeout(() => localRateLimit.delete(ip), RATE_LIMIT_WINDOW * 1000);
+  }
+
+  // Parse request body
   const { name, email, message } = await req.json();
   console.log("Request body:", {
     name,
@@ -11,6 +57,7 @@ export async function POST(req: Request) {
     message: message.substring(0, 50) + "...",
   });
 
+  // Check environment variables
   const apiKey = process.env.SENDGRID_API_KEY;
   const toEmail = process.env.TO_EMAIL;
   const fromEmail = process.env.FROM_EMAIL;
