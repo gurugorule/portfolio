@@ -2,7 +2,17 @@
 
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Github, Linkedin, Mail, FileText, Terminal, Menu } from "lucide-react";
+import {
+  Github,
+  Linkedin,
+  Mail,
+  FileText,
+  Terminal,
+  Menu,
+  Video,
+  Stethoscope,
+  Briefcase,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
@@ -92,24 +102,51 @@ const Section = React.memo(
 );
 Section.displayName = "Section";
 
-const ProjectCard = React.memo(({ index }: { index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, scale: 0.9 }}
-    whileInView={{ opacity: 1, scale: 1 }}
-    whileHover={{ y: -5 }}
-    viewport={{ once: true }}
-    transition={{ delay: index * 0.1 }}
-    className="group relative overflow-hidden rounded-lg border bg-black/40 p-6 backdrop-blur-md"
-  >
-    <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-    <Terminal className="mb-4 h-8 w-8 text-[#4ff0c1]" />
-    <h3 className="mb-2 text-xl font-bold">Project {index}</h3>
-    <p className="text-gray-400">
-      Description of project {index}. This is a brief overview of what the
-      project entails.
-    </p>
-  </motion.div>
-));
+const ProjectCard = React.memo(
+  ({
+    title,
+    description,
+    icon: Icon,
+    link,
+    index,
+  }: {
+    title: string;
+    description: string;
+    icon: React.ElementType;
+    link: string;
+    index: number;
+  }) => (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      whileHover={{ y: -5 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="group relative overflow-hidden rounded-lg border bg-black/40 p-6 backdrop-blur-md cursor-pointer"
+      onClick={() => window.open(link, "_blank", "noopener,noreferrer")}
+    >
+      <div className="absolute inset-0 bg-gradient-to-r from-pink-500/10 via-purple-500/10 to-cyan-500/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <Icon className="mb-4 h-8 w-8 text-[#4ff0c1]" />
+      <h3 className="mb-2 text-xl font-bold">{title}</h3>
+      <p className="text-gray-400 mb-4">{description}</p>
+      <div className="flex items-center text-[#4ff0c1] hover:underline">
+        <span>View on GitHub</span>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4 ml-1"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </div>
+    </motion.div>
+  ),
+);
 ProjectCard.displayName = "ProjectCard";
 
 const SkillItem = React.memo(
@@ -332,9 +369,27 @@ export default function Home() {
 
       <Section id="projects" title="Featured Projects">
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <ProjectCard key={i} index={i} />
-          ))}
+          <ProjectCard
+            title="Seedling"
+            description="An AI video generation platform that allows you to create videos effortlessly."
+            icon={Video}
+            link="https://github.com/gurugorule/seedling"
+            index={0}
+          />
+          <ProjectCard
+            title="Medi-Chat"
+            description="A healthcare communication platform designed to improve patient-doctor interactions."
+            icon={Stethoscope}
+            link="https://github.com/gurugorule/medi-chat"
+            index={1}
+          />
+          <ProjectCard
+            title="Portfolio Website"
+            description="A responsive and interactive portfolio showcasing my skills and projects."
+            icon={Briefcase}
+            link="https://github.com/gurugorule/portfolio"
+            index={2}
+          />
         </div>
       </Section>
 
