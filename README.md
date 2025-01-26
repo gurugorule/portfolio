@@ -170,4 +170,4 @@ This project is licensed under the MIT License. See the [LICENSE](./LICENSE) fil
 
 Gurunath Gorule - goruleguru@gmail.com
 
-Project Link: [my-portfolio](https://github.com/gurugorule/portfolio)
+Project Link: [my-portfolio](https://guru-portfolio-three.vercel.app)
